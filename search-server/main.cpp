@@ -88,7 +88,7 @@ public:
     template <typename StringContainer>
     explicit SearchServer(const StringContainer& stop_words)
         : stop_words_(MakeUniqueNonEmptyStrings(stop_words)) {
-            if (!AreStopWordsValid(stop_words)) {
+            if (!all_of(stop_words.begin(), stop_words.end(), [] (string word) { return IsValidWord(word);})) {
                 throw invalid_argument("invalid stop-words"s);
             }
     }
@@ -148,8 +148,7 @@ public:
     }
 
     tuple<vector<string>, DocumentStatus>  MatchDocument(const string& raw_query, int document_id) const {
-        // Empty result by initializing it with default constructed tuple
-        
+       
         Query query = ParseQuery(raw_query);
         vector<string> matched_words;
         for (const string& word : query.plus_words) {
@@ -170,7 +169,7 @@ public:
             }
         }
       
-        return tuple{matched_words, documents_.at(document_id).status};
+        return {matched_words, documents_.at(document_id).status};
         
     }
 
@@ -193,16 +192,6 @@ private:
         return none_of(word.begin(), word.end(), [](char c) {
             return c >= '\0' && c < ' ';
         });
-    }
-    
-    template <typename StringContainer>
-    static bool AreStopWordsValid(const StringContainer& stop_words) {
-        for(const auto& word: stop_words) {
-            if (!IsValidWord(word)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     vector<string> SplitIntoWordsNoStop(const string& text) const {
@@ -232,12 +221,9 @@ private:
         bool is_stop;
     };
 
-    bool ParseQueryWord(string text, QueryWord& result) const {
-        // Empty result by initializing it with default constructed QueryWord
-        result = {};
-
+    QueryWord ParseQueryWord(string text) const {
         if (text.empty()) {
-            return false;
+            return {};
         }
         bool is_minus = false;
         if (text[0] == '-') {
@@ -245,11 +231,11 @@ private:
             text = text.substr(1);
         }
         if (text.empty() || text[0] == '-' || !IsValidWord(text)) {
-            return false;
+            return {};
         }
 
-        result = QueryWord{text, is_minus, IsStopWord(text)};
-        return true;
+        return {text, is_minus, IsStopWord(text)};
+        
     }
 
     struct Query {
@@ -261,8 +247,8 @@ private:
         // Empty result by initializing it with default constructed Query
         Query result;
         for (const string& word : SplitIntoWords(text)) {
-            QueryWord query_word;
-            if (!ParseQueryWord(word, query_word)) {
+            QueryWord query_word = ParseQueryWord(word);
+            if (query_word.data.empty()) {
                 throw invalid_argument("invalid word"s);
             }
             if (!query_word.is_stop) {
