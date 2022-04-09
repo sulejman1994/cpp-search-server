@@ -1,6 +1,8 @@
 #pragma once
+
 #include "document.h"
 #include "string_processing.h"
+
 #include <vector>
 #include <string>
 #include <set>
@@ -12,10 +14,11 @@
 #include <stdexcept>
 #include <iterator>
 
-using namespace std;
+using std::string, std::set, std::vector, std::map, std::tuple, std::invalid_argument, std::min, std::abs;
 
 const int MAX_RESULT_DOCUMENT_COUNT = 5;
 const double EPSILON = 1e-6;
+static map<string, double> empty_map;
 
 class SearchServer {
 public:
@@ -28,15 +31,12 @@ public:
 
     template <typename DocumentPredicate>
     vector<Document> FindTopDocuments(const string& raw_query, DocumentPredicate document_predicate) const;
-
-    vector<Document> FindTopDocuments(const string& raw_query, DocumentStatus status) const;
-    
+    vector<Document> FindTopDocuments(const string& raw_query, DocumentStatus status) const;    
     vector<Document> FindTopDocuments(const string& raw_query) const;
     
     int GetDocumentCount() const;
     
-    set<int>::const_iterator begin() const;
-    
+    set<int>::const_iterator begin() const;   
     set<int>::const_iterator end() const;
     
     const map<string, double>& GetWordFrequencies(int document_id) const;
@@ -92,7 +92,7 @@ SearchServer::SearchServer(const StringContainer& stop_words)
         : stop_words_(MakeUniqueNonEmptyStrings(stop_words))  // Extract non-empty stop words
 {
     if (!all_of(stop_words_.begin(), stop_words_.end(), IsValidWord)) {
-        throw invalid_argument("Some of stop words are invalid"s);
+        throw invalid_argument("Some of stop words are invalid");
     }
 }
 

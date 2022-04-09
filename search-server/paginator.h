@@ -1,13 +1,16 @@
 #pragma once
+
 #include <iostream>
 #include <set>
 #include <vector>
 #include <cmath>
-using namespace std;
+#include <algorithm>
+
 
 template <typename Iterator>
 class IteratorRange {
 public:
+   
     IteratorRange(Iterator begin, Iterator end) {
       begin_ = begin;
       end_ = end;
@@ -24,6 +27,7 @@ public:
 private:
     Iterator begin_, end_;
 };
+
 
 template <typename Iterator>
 ostream& operator << (ostream& out, IteratorRange<Iterator> it_range) {

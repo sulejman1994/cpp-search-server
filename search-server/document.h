@@ -1,6 +1,8 @@
 #pragma once
+
 #include <iostream>
-using namespace std;
+
+using std::ostream;
 
 struct Document {
     Document() = default;

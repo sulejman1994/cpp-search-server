@@ -1,10 +1,13 @@
 #pragma once
+
 #include "search_server.h"
 #include "document.h"
+
 #include <vector>
 #include <deque>
 
-using namespace std;
+using std::deque;
+
 class RequestQueue {
 public:
     explicit RequestQueue( const SearchServer& search_server) :search_server_(search_server), no_results_requests_(0), current_time_(0) {

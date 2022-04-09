@@ -1,7 +1,9 @@
 #pragma once
+
 #include <string>
 #include <iostream>
-using namespace std;
+
+using std::string;
 
 string ReadLine();
 

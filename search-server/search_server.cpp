@@ -1,5 +1,7 @@
 #include "search_server.h"
 
+using namespace std;
+
  SearchServer::SearchServer(const string& stop_words_text)
     : SearchServer(SplitIntoWords(stop_words_text))  // Invoke delegating constructor
                                                          // from string container
@@ -51,7 +53,7 @@ set<int>::const_iterator SearchServer::end() const {
 
 const map<string, double>& SearchServer::GetWordFrequencies(int document_id) const {
     if (document_ids_.count(document_id) == 0) {
-        throw invalid_argument("invalid id");
+        throw invalid_argument("");
     }
     return id_to_word_freqs_.at(document_id);
 }
@@ -59,13 +61,13 @@ const map<string, double>& SearchServer::GetWordFrequencies(int document_id) con
 
 void SearchServer::RemoveDocument(int document_id) {
     documents_.erase(document_id);
-    id_to_word_freqs_.erase(document_id);
     document_ids_.erase(document_id);
     
-    auto copy_of_word_to_document_freqs = word_to_document_freqs_;
-    for(const auto& [word, _]: copy_of_word_to_document_freqs) {
+    for(const auto& [word, _]: id_to_word_freqs_[document_id]) {
         word_to_document_freqs_[word].erase(document_id);
     }
+    
+    id_to_word_freqs_.erase(document_id);
 }
 
 

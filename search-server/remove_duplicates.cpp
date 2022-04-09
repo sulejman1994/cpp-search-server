@@ -1,5 +1,7 @@
 #include "remove_duplicates.h"
 
+using namespace std;
+
 set<string> CalcSetOfWords(const map<string, double>& word_to_freqs) {
     set<string> result;
     for(const auto& [word, _]: word_to_freqs) {
