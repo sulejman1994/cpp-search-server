@@ -1,8 +1,8 @@
 #pragma once
 #include "search_server.h"
 #include "document.h"
-#include<vector>
-#include<deque>
+#include <vector>
+#include <deque>
 
 using namespace std;
 class RequestQueue {

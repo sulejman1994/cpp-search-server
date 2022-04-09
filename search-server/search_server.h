@@ -1,15 +1,17 @@
 #pragma once
 #include "document.h"
 #include "string_processing.h"
-#include<vector>
-#include<string> 
-#include<set>
-#include<map>
-#include<cmath>
-#include<numeric>
-#include<algorithm>
-#include<utility>
+#include <vector>
+#include <string>
+#include <set>
+#include <map>
+#include <cmath>
+#include <numeric>
+#include <algorithm>
+#include <utility>
 #include <stdexcept>
+#include <iterator>
+
 using namespace std;
 
 const int MAX_RESULT_DOCUMENT_COUNT = 5;
@@ -32,8 +34,14 @@ public:
     vector<Document> FindTopDocuments(const string& raw_query) const;
     
     int GetDocumentCount() const;
-
-    int GetDocumentId(int index) const;
+    
+    set<int>::const_iterator begin() const;
+    
+    set<int>::const_iterator end() const;
+    
+    const map<string, double>& GetWordFrequencies(int document_id) const;
+    
+    void RemoveDocument(int document_id);
 
     tuple<vector<string>, DocumentStatus> MatchDocument(const string& raw_query, int document_id) const;
     
@@ -45,7 +53,8 @@ private:
     const set<string> stop_words_;
     map<string, map<int, double>> word_to_document_freqs_;
     map<int, DocumentData> documents_;
-    vector<int> document_ids_;
+    set<int> document_ids_;
+    map<int, map<string, double> > id_to_word_freqs_;
 
     bool IsStopWord(const string& word) const;
     
@@ -69,8 +78,7 @@ private:
     };
 
     Query ParseQuery(const string& text) const;
-
-    // Existence required
+    
     double ComputeWordInverseDocumentFreq(const string& word) const;
 
     template <typename DocumentPredicate>

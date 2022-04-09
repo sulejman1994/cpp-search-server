@@ -1,8 +1,8 @@
 #pragma once
-#include<iostream>
-#include<set>
-#include<vector>
-#include<cmath>
+#include <iostream>
+#include <set>
+#include <vector>
+#include <cmath>
 using namespace std;
 
 template <typename Iterator>
