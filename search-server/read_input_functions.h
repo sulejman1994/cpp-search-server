@@ -8,3 +8,5 @@ using std::string;
 string ReadLine();
 
 int ReadLineWithNumber();
+
+

@@ -32,3 +32,5 @@ void RequestQueue::AddRequest(int results_num) {
         ++no_results_requests_;
     }
 }
+
+
