@@ -1,5 +1,6 @@
 #include "search_server.h"
 #include "process_queries.h"
+#include "log_duration.h"
 
 #include <execution>
 #include <iostream>
@@ -54,21 +55,19 @@ vector<string> GenerateQueries(mt19937& generator, const vector<string>& diction
 
 template <typename ExecutionPolicy>
 void Test(string_view mark, const SearchServer& search_server, const vector<string>& queries, ExecutionPolicy&& policy) {
-   // LOG_DURATION(mark);
-    auto start = clock();
+    LOG_DURATION(mark);
     double total_relevance = 0;
     for (const string_view query : queries) {
         for (const auto& document : search_server.FindTopDocuments(policy, query)) {
             total_relevance += document.relevance;
         }
     }
-    cout << mark << " " << (clock() - start) * 1.0 / CLOCKS_PER_SEC << endl;
-    cout << total_relevance << endl;
 }
 
 #define TEST(policy) Test(#policy, search_server, queries, execution::policy)
 
-int main() {
+int main() { // здесь производится запуск последовательной и параллельной версии
+            // и сравнивается быстродействие
     mt19937 generator;
 
     const auto dictionary = GenerateDictionary(generator, 1000, 10);
