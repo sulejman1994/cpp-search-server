@@ -1,6 +1,5 @@
 #include "search_server.h"
 #include "process_queries.h"
-//#include "log_duration.h"
 
 #include <execution>
 #include <iostream>
@@ -63,7 +62,7 @@ void Test(string_view mark, const SearchServer& search_server, const vector<stri
             total_relevance += document.relevance;
         }
     }
-    cout << mark << " " << (clock() - start) / 1000.0 << endl;
+    cout << mark << " " << (clock() - start) * 1.0 / CLOCKS_PER_SEC << endl;
     cout << total_relevance << endl;
 }
 

@@ -20,13 +20,6 @@ vector<vector<Document>> ProcessQueries(
 }
 
 list<Document> ProcessQueriesJoined(const SearchServer& search_server, const vector<string>& queries) {
-   /* ResultOfQueries res_of_queries(ProcessQueries(search_server, queries));
-    return res_of_queries;
-}*/
-
-/*vector<Document> ProcessQueriesJoined(
-    const SearchServer& search_server,
-    const vector<string>& queries) { */
     
     vector<vector<Document>> res_of_queries = ProcessQueries(search_server, queries);
     size_t sz = res_of_queries.size();
@@ -40,20 +33,4 @@ list<Document> ProcessQueriesJoined(const SearchServer& search_server, const vec
         res_list.splice(res_list.end(), lists[i]);
     }
     return res_list; 
-   
-  /*  vector<vector<Document>> res_of_queries(ProcessQueries(search_server, queries));  
-    vector<Document> result; 
-   // result.reserve(search_server.GetDocumentCount());
-    result.reserve(10000);
-    for_each(std::execution::seq, res_of_queries.begin(), res_of_queries.end(), [&] (const auto& res_of_query) {
-        for (const auto& doc:res_of_query) {
-            result.push_back(doc);
-        }
-    }); */
-    /*for (const auto& res_of_query: res_of_queries) {
-        for (const auto& doc: res_of_query) {
-            result.push_back(doc);
-        }
-    } */
-  //  return result; 
 } 
