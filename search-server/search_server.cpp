@@ -229,7 +229,7 @@ SearchServer::QueryWord SearchServer::ParseQueryWord(string_view word) const {
 
 
 SearchServer::Query SearchServer::ParseQuery(string_view text) const {
-    // не знаю, к чему вы сортировку упомянули. Я по-другому переделал и прекрасно работает. В Query теперь вектора.
+    
     set<string> set_of_minus_words, set_of_plus_words;
     for (const string_view& word : SplitIntoWords(text)) {
         const auto query_word = ParseQueryWord(word);
